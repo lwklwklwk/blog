@@ -11,6 +11,7 @@
     "egg-cors": "^2.2.0",
     "egg-scripts": "^2.11.0",
     "egg-sequelize": "^5.1.0",
+    "js-md5": "^0.7.3",
     "mysql2": "^1.6.5"
   },
   "devDependencies": {
@@ -30,7 +31,8 @@
     "start": "egg-scripts start --daemon --title=egg-server-first",
     "stop": "egg-scripts stop --title=egg-server-first",
     "dev": "egg-bin dev",
-    "sequelize:migrate:do": "sequelize db:migrate&&sequelize db:seed:all",
+    "sequelize:migrate:do": "sequelize db:migrate",
+    "sequelize:seed:do": "sequelize db:seed:all",
     "sequelize:seed:undo": "sequelize db:seed:undo:all",
     "sequelize:migrate:undo": "sequelize db:migrate:undo:all"
   },

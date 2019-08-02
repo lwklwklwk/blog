@@ -4,11 +4,17 @@
   </div>
 </template>
 <script>
+import api from "../api/api";
 export default {
   data() {
     return {
       MDValue:''
     };
+  },
+  created(){
+    api.findDoc(this.$route.query.id).then(res=>{
+      this.MDValue=res.content
+    })
   },
   methods: {
     //md编辑器相关

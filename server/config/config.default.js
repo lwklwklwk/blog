@@ -16,7 +16,7 @@ module.exports = appInfo => {
   config.keys = appInfo.name + '_1562419431187_7638';
 
   // add your middleware config here
-  config.middleware = [];
+  config.middleware = ['auth'];
 
   // add your user config here
   const userConfig = {
@@ -26,17 +26,17 @@ module.exports = appInfo => {
     listen: {
       port: 8081,
     }
-};
+  };
   config.cors = {
-     origin: '*',
+    origin: '*',
     allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH',
-    credentials:true
-    }
-    config.security = {
-      csrf: {
-              enable: false,
-          },
-    }
+    credentials: true
+  }
+  config.security = {
+    csrf: {
+      enable: false,
+    },
+  }
   config.sequelize = {
     dialect: 'mysql',
     host: '127.0.0.1',

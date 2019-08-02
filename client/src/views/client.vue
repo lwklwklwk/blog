@@ -39,7 +39,25 @@
         </div>
       </el-card>
     </el-col>
-    <i @click="toAdmin" class="el-icon-edit edit"></i>
+    <i v-if="ifLogin" @click="toAdmin" class="el-icon-edit edit"></i>
+    <i v-if="!ifLogin" @click="dialogVisible = true" class="el-icon-s-custom edit"></i>
+    <el-dialog title="登陆" :visible.sync="dialogVisible" width="30%">
+      <el-form :rules="rules" ref="form" :model="form">
+        <el-form-item prop="user" label="账户">
+          <el-input v-model="form.user" placeholder></el-input>
+        </el-form-item>
+        <el-form-item prop="password" label="密码">
+          <el-input v-model="form.password" placeholder></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="onSubmit">登陆</el-button>
+        </el-form-item>
+      </el-form>
+      <!-- <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+      </span>-->
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -47,14 +65,31 @@
 import Vue from "vue";
 import marked from "marked";
 import api from "../api/api";
+import md5 from "js-md5";
 export default {
   name: "client",
   components: {},
   data() {
+    var validatePass = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请输入密码"));
+      }
+      callback();
+    };
     return {
       markdownText: "",
       isCollapse: true,
-      title: "JS闭包心得"
+      title: "JS闭包心得",
+      dialogVisible: false,
+      ifLogin: false,
+      form: {
+        user: "",
+        password: ""
+      },
+      rules: {
+        user: [{ required: true, message: "请输入活动名称", trigger: "blur" }],
+        password: [{ validator: validatePass, trigger: "blur" }]
+      }
     };
   },
   computed: {
@@ -63,13 +98,11 @@ export default {
     }
   },
   created() {
-    // let that = this;
-    // this.socket = io("127.0.0.1:3000");
-    // this.socket.on("getTH", msg => {
-    //   this.tableHead = msg.TH;
-    //   this.tableData = msg.TD;
-    //   console.log("收到TH");
-    // });
+    let md5User = localStorage.getItem("md5");
+    if (md5User) {
+      // api.login({md5:md5User}).then(res=>console.log(res)).catch(err=>console.log(err))
+      this.ifLogin = true;
+    }
   },
   methods: {
     handleOpen(key, keyPath) {
@@ -78,8 +111,41 @@ export default {
     handleClose(key, keyPath) {
       console.log(key, keyPath);
     },
-    toAdmin(){
-      this.$router.push('/admin')
+    toAdmin() {
+      this.$router.push({
+        path: "/admin",
+        query: {
+          id:1 
+        }
+      });
+    },
+    onSubmit(e) {
+      this.$refs["form"].validate(valid => {
+        let md5User = md5(
+          JSON.stringify({
+            user: this.form.user,
+            password: this.form.password
+          })
+        );
+        if (valid) {
+          api
+            .login({
+              md5: md5User
+            })
+            .then(res => {
+              console.log(res);
+              if (res.status === 0) {
+                localStorage.setItem("md5", md5User);
+              }
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
     }
   }
   // watch: {
