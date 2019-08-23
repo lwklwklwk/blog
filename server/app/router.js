@@ -9,5 +9,8 @@ module.exports = app => {
   router.get('/', controller.home.index);
   router.resources('users', '/user', controller.user);
   router.post('/login',controller.user.login)
-  router.resources('documents','/document',authMiddleware,controller.document)
+  router.get('/document',controller.document.index)
+  router.get('/document/:id',controller.document.show)
+  router.post('/document/:id',controller.document.update)
+  router.post('/upload',controller.upload.upload)
 };

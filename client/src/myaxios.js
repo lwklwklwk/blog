@@ -20,18 +20,19 @@ service.interceptors.request.use((request) => {
 service.interceptors.response.use(
   response => { // 成功请求到数据
     // app.$loading().close()
-    // 这里根据后端提供的数据进行对应的处理
-    return response.data
-    if (response.data.status === 0) {
-      
-    } else {
-      app.$message({
-        showClose: true,
-        message: response.data.info,
-        type: 'error'
-      })
-      throw response.data.info
+    // 这里根据后端提供的数据进行对应的处理    
+    if (response.data.status === -1) {
+      throw response.data
     }
+    return response.data
+//  else {
+    //   app.$message({
+    //     showClose: true,
+    //     message: response.data.info,
+    //     type: 'error'
+    //   })
+    //   throw response.data.info
+    // }
   },
   error => { // 网络响应错误处理
     // eslint-disable-next-line

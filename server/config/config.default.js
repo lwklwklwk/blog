@@ -16,8 +16,13 @@ module.exports = appInfo => {
   config.keys = appInfo.name + '_1562419431187_7638';
 
   // add your middleware config here
-  config.middleware = ['auth'];
-
+  config.multipart = {
+    mode: 'file',
+  };
+  config.bodyParser = {
+    jsonLimit: '5mb',
+    formLimit: '6mb',
+  };
   // add your user config here
   const userConfig = {
     // myAppName: 'egg',

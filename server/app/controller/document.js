@@ -32,14 +32,18 @@ class DocumentController extends Controller {
   async update() {
     const ctx = this.ctx;
     const id = toInt(ctx.params.id);
-    const user = await ctx.model.User.findByPk(id);
+    const user = await ctx.model.Document.findByPk(id);
     if (!user) {
-      ctx.status = 404;
+      ctx.status = 200;
+      ctx.body={
+        status:-1,
+        msg:'找不到这个id对应的数据'
+      }
       return;
     }
 
-    const { name, age } = ctx.request.body;
-    await user.update({ name, age });
+    const { content ,title} = ctx.request.body;
+    await user.update({ content ,title});
     ctx.body = user;
   }
 
@@ -55,27 +59,27 @@ class DocumentController extends Controller {
     await user.destroy();
     ctx.status = 200;
   }
-  async login() {
-    const ctx = this.ctx;
-    console.log(ctx.request.body)
-    ctx.status = 200
-    let checkMD5 = md5(JSON.stringify({ user: 'lwk', password: '12345' }))
-    console.log(checkMD5)
-    if (ctx.request.body.md5 === checkMD5) {
-      ctx.body = {
-        status: 0,
-        msg: 'ok'
-      }
-    }
-    else {
-    ctx.body = {
-      status: 1,
-      msg: 'check error'
-    }
+  // async login() {
+  //   const ctx = this.ctx;
+  //   console.log(ctx.request.body)
+  //   ctx.status = 200
+  //   let checkMD5 = md5(JSON.stringify({ user: 'lwk', password: '12345' }))
+  //   console.log(checkMD5)
+  //   if (ctx.request.body.md5 === checkMD5) {
+  //     ctx.body = {
+  //       status: 0,
+  //       msg: 'ok'
+  //     }
+  //   }
+  //   else {
+  //   ctx.body = {
+  //     status: 1,
+  //     msg: 'check error'
+  //   }
 
-    }
-    return
-  }
+  //   }
+  //   return
+  // }
 }
 
 module.exports = DocumentController;

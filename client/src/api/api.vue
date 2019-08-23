@@ -11,14 +11,40 @@ export default {
       url: `login`,
       method: "post",
       type: "json",
-      data:MD5params
-    })
+      data: MD5params
+    });
   },
   async findDoc(id) {
-        return axios({
+    return axios({
       url: `document/${id}`,
       method: "get"
-    })
+    });
+  },
+  async getAllDoc() {
+    return axios({
+      url: `document`,
+      method: "get"
+    });
+  },
+  async updateDoc(id, doc) {
+    return axios({
+      url: `document/${id}`,
+      method: "post",
+      data: doc
+    });
+  },
+  async uploadFile(file) {
+    console.log(file)
+    let fd= new FormData()
+    fd.append('file',file)
+    return axios({
+      url: `upload`,
+      method: "post",
+      data: fd,
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      }
+    });
   }
 };
 </script>

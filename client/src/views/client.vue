@@ -1,48 +1,36 @@
 <template>
   <div>
-    <el-col :span="isCollapse?2:6">
-      <el-menu
-        default-active="2"
-        class="el-menu-vertical-demo"
-        @open="handleOpen"
-        @close="handleClose"
-        background-color="#e6e6e6"
-        text-color="#9E9E9E"
-        active-text-color="#607D8B"
-        :collapse="isCollapse"
-      >
-        <i
-          style="position: relative;font-size: 54px;color: #607D8B;"
-          @click="isCollapse=!isCollapse"
-          :class="isCollapse?'el-icon-caret-right':'el-icon-caret-left'"
-        ></i>
-        <el-menu-item index="2">
+    <div>
+            <i
+        style="position: relative;font-size: 54px;color: #607D8B;"
+        @click="showDrawer=!showDrawer"
+        :class="showDrawer?'el-icon-caret-right':'el-icon-caret-left'"
+      ></i>
+    </div>
+
+      <el-drawer title="目录" :visible.sync="showDrawer" direction='ltr' size="30%">
+        <div @click="changeDoc(item)" style="margin-left:30px;cursor:pointer" v-for="item in docList" :key="item.id">
           <i class="el-icon-menu"></i>
-          <span slot="title">导航二</span>
-        </el-menu-item>
-        <el-menu-item index="3">
-          <i class="el-icon-document"></i>
-          <span slot="title">导航三</span>
-        </el-menu-item>
-      </el-menu>
-    </el-col>
+          <span slot="title">{{item.title}}</span>
+        </div>
+      </el-drawer>
     <el-col :offset="1" :span="16">
       <el-card>
         <div slot="header">
-          <h1>{{title}}</h1>
+          <h1>{{nowDoc.title}}</h1>
         </div>
-        <div id="editor">
-          <textarea v-model="markdownText">input</textarea>
-        </div>
+        <!-- <div id="editor">
+          <textarea v-model="nowDoc.content">input</textarea>
+        </div> -->
         <div id="preview">
           <div v-html="compiledMarkdown"></div>
         </div>
       </el-card>
     </el-col>
     <i v-if="ifLogin" @click="toAdmin" class="el-icon-edit edit"></i>
-    <i v-if="!ifLogin" @click="dialogVisible = true" class="el-icon-s-custom edit"></i>
+    <i  v-if="!ifLogin" @click="dialogVisible = true" class="el-icon-edit edit"></i>
     <el-dialog title="登陆" :visible.sync="dialogVisible" width="30%">
-      <el-form :rules="rules" ref="form" :model="form">
+      <el-form v-if="!ifLogin" :rules="rules" ref="form" :model="form">
         <el-form-item prop="user" label="账户">
           <el-input v-model="form.user" placeholder></el-input>
         </el-form-item>
@@ -78,7 +66,7 @@ export default {
     };
     return {
       markdownText: "",
-      isCollapse: true,
+      showDrawer: false,
       title: "JS闭包心得",
       dialogVisible: false,
       ifLogin: false,
@@ -87,14 +75,16 @@ export default {
         password: ""
       },
       rules: {
-        user: [{ required: true, message: "请输入活动名称", trigger: "blur" }],
+        user: [{ required: true, message: "用户名", trigger: "blur" }],
         password: [{ validator: validatePass, trigger: "blur" }]
-      }
+      },
+      docList: [],
+      nowDoc:{}
     };
   },
   computed: {
     compiledMarkdown: function() {
-      return marked(this.markdownText);
+      return marked(this.nowDoc.content||'');
     }
   },
   created() {
@@ -103,6 +93,16 @@ export default {
       // api.login({md5:md5User}).then(res=>console.log(res)).catch(err=>console.log(err))
       this.ifLogin = true;
     }
+    api
+      .getAllDoc()
+      .then(e => {
+        console.log(e);
+        this.docList = e;
+      })
+      .catch(e => {
+        console.log(e);
+      });
+      console.log(this.$route.query.docId)
   },
   methods: {
     handleOpen(key, keyPath) {
@@ -115,11 +115,12 @@ export default {
       this.$router.push({
         path: "/admin",
         query: {
-          id:1 
+          id: this.nowDoc.id
         }
       });
     },
     onSubmit(e) {
+      const that = this;
       this.$refs["form"].validate(valid => {
         let md5User = md5(
           JSON.stringify({
@@ -136,9 +137,11 @@ export default {
               console.log(res);
               if (res.status === 0) {
                 localStorage.setItem("md5", md5User);
+                that.$message({ type: "success", message: "登录成功" });
               }
             })
             .catch(err => {
+              that.$message({ type: "error", message: err });
               console.log(err);
             });
         } else {
@@ -146,6 +149,10 @@ export default {
           return false;
         }
       });
+    },
+    changeDoc(doc){
+      this.nowDoc = doc;
+      this.showDrawer = false
     }
   }
   // watch: {
