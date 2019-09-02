@@ -1,14 +1,16 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import client from './views/client.vue'
-import admin from './views/admin'
+import adminHome from "./views/admin/home"
+import adminDoc from './views/admin/admin'
+import home from './views/client/home'
+import client from './views/client/client.vue'
 Vue.use(Router)
 export default new Router({
   routes: [
     {
       path: '/',
-      name: 'client',
-      component: client
+      name: 'home',
+      component: home
     },
     {
       path: '/client',
@@ -16,9 +18,14 @@ export default new Router({
       component: client
     },
     {
-      path:'/admin',
-      name:'/admin',
-      component:admin
+      path:'/admin/doc',
+      name:'adminDoc',
+      component:adminDoc
+    },
+    {
+      path:'/admin/home',
+      name:'adminHome',
+      component:adminHome
     }
   ]
 })

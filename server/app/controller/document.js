@@ -1,5 +1,6 @@
 /* eslint-disable strict */
 // app/controller/users.js
+let help = require('../help/help.js')
 const Controller = require('egg').Controller;
 function toInt(str) {
   if (typeof str === 'number') return str;
@@ -22,11 +23,12 @@ class DocumentController extends Controller {
 
   async create() {
     const ctx = this.ctx;
-    const { name, phone } = ctx.request.body;
-    console.log(name, phone)
-    const document = await ctx.model.Document.create({ name, phone });
+    const { title } = ctx.request.body;
+    console.log(title)
+    console.log('时间'+help.getNowDate())
+    const document = await ctx.model.Document.create({ title, lastTime:help.getNowDate() });
     ctx.status = 201;
-    ctx.body = document;
+    ctx.body = { status: 0, document };
   }
 
   async update() {
@@ -35,15 +37,15 @@ class DocumentController extends Controller {
     const user = await ctx.model.Document.findByPk(id);
     if (!user) {
       ctx.status = 200;
-      ctx.body={
-        status:-1,
-        msg:'找不到这个id对应的数据'
+      ctx.body = {
+        status: -1,
+        msg: '找不到这个id对应的数据'
       }
       return;
     }
 
-    const { content ,title} = ctx.request.body;
-    await user.update({ content ,title});
+    const { content, title } = ctx.request.body;
+    await user.update({ content, title });
     ctx.body = user;
   }
 

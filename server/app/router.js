@@ -11,6 +11,7 @@ module.exports = app => {
   router.post('/login',controller.user.login)
   router.get('/document',controller.document.index)
   router.get('/document/:id',controller.document.show)
-  router.post('/document/:id',controller.document.update)
+  router.put('/document/:id',authMiddleware,controller.document.update)
+  router.post('/document',authMiddleware,controller.document.create)
   router.post('/upload',controller.upload.upload)
 };

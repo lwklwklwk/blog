@@ -14,7 +14,7 @@ module.exports = {
       content: {
         type: Sequelize.INTEGER,
       },
-      lastTime:{
+      last_time:{
         type: Sequelize.DATE
       },
       createdAt: {

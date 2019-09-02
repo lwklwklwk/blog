@@ -26,11 +26,18 @@ export default {
       method: "get"
     });
   },
-  async updateDoc(id, doc) {
+    async createDoc(data) {
+    return axios({
+      url: `document`,
+      method: "post",
+      data: data
+    });
+  },
+  async updateDoc(id, data) {
     return axios({
       url: `document/${id}`,
-      method: "post",
-      data: doc
+      method: "put",
+      data: data
     });
   },
   async uploadFile(file) {

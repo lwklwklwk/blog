@@ -1,0 +1,146 @@
+<template>
+  <div>
+    <div @click='toClientHome' class="backhome">
+      <i  class="el-icon-s-home "></i>返回首页
+    </div>
+    <div>
+      <i
+        style="position: relative;font-size: 54px;color: #607D8B;"
+        @click="showDrawer=!showDrawer"
+        :class="showDrawer?'el-icon-caret-right':'el-icon-caret-left'"
+      ></i>
+    </div>
+
+    <el-drawer title="目录" :visible.sync="showDrawer" direction="ltr" size="30%">
+      <div
+        @click="changeDoc(item)"
+        style="margin-left:30px;cursor:pointer"
+        v-for="item in docList"
+        :key="item.id"
+      >
+        <i class="el-icon-menu"></i>
+        <span slot="title">{{item.title}}</span>
+      </div>
+    </el-drawer>
+    <el-col :offset="1" :span="16">
+      <el-card>
+        <div slot="header">
+          <h1>{{nowDoc.title}}</h1>
+        </div>
+        <!-- <div id="editor">
+          <textarea v-model="nowDoc.content">input</textarea>
+        </div>-->
+        <div id="preview">
+          <div v-html="compiledMarkdown"></div>
+        </div>
+      </el-card>
+    </el-col>
+    <!-- <i v-if="ifLogin" @click="toAdmin" class="el-icon-edit edit"></i>
+    <i  v-if="!ifLogin" @click="dialogVisible = true" class="el-icon-edit edit"></i>
+    <el-dialog title="登陆" :visible.sync="dialogVisible" width="30%">
+      <el-form v-if="!ifLogin" :rules="rules" ref="form" :model="form">
+        <el-form-item prop="user" label="账户">
+          <el-input v-model="form.user" placeholder></el-input>
+        </el-form-item>
+        <el-form-item prop="password" label="密码">
+          <el-input v-model="form.password" placeholder></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="login">登陆</el-button>
+        </el-form-item>
+    </el-form>-->
+    <!-- <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+    </span>-->
+    <!-- </el-dialog> -->
+    <loginButton :url="'/admin/doc'"></loginButton>
+  </div>
+</template>
+<script>
+/* eslint-disable */
+import Vue from "vue";
+import marked from "marked";
+import api from "../../api/api";
+import loginButton from "@/component/loginButton.vue";
+export default {
+  name: "client",
+  components: {
+    loginButton
+  },
+  data() {
+    return {
+      markdownText: "",
+      showDrawer: false,
+      title: "JS闭包心得",
+      docList: [],
+      nowDoc: {}
+    };
+  },
+  computed: {
+    compiledMarkdown: function() {
+      return marked(this.nowDoc.content || "");
+    }
+  },
+  created() {
+    api
+      .getAllDoc()
+      .then(e => {
+        console.log(e);
+        this.docList = e;
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  },
+  methods: {
+    handleOpen(key, keyPath) {
+      console.log(key, keyPath);
+    },
+    handleClose(key, keyPath) {
+      console.log(key, keyPath);
+    },
+    changeDoc(doc) {
+      this.nowDoc = doc;
+      this.showDrawer = false;
+    },
+    toClientHome(){
+      this.$router.push({
+        path: '/'
+      });
+    }
+  }
+  // watch: {
+  //   tableHead: {
+  //     handler(newval,oldval) {
+  //       console.log(newval)
+  //       console.log(oldval)
+  //       //this.socket.emit('sentTH',newval);
+  //     },
+  //     deep: true
+  //   },
+  //   tableData: {
+  //     handler(newval) {
+  //       console.log(newval);
+  //     },
+  //     deep: true
+  //   },
+  // }
+};
+</script>
+<style scoped>
+.backhome{
+    float: right;
+    margin-right: 2%;
+    color: #8ea3ad;
+    cursor:pointer;
+}
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  /* flex-direction: column; */
+  align-items: center;
+}
+</style>
+
