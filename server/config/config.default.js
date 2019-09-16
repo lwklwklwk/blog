@@ -49,6 +49,7 @@ module.exports = appInfo => {
     database: 'test',
     password: 'admin',
     username: 'root',
+    timezone: '+08:00'
   };
   return {
     ...config,

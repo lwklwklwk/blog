@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import adminHome from "./views/admin/home"
-import adminDoc from './views/admin/admin'
+import editDoc from './views/admin/editDoc'
 import home from './views/client/home'
 import client from './views/client/client.vue'
 Vue.use(Router)
@@ -19,8 +19,8 @@ export default new Router({
     },
     {
       path:'/admin/doc',
-      name:'adminDoc',
-      component:adminDoc
+      name:'editDoc',
+      component:editDoc
     },
     {
       path:'/admin/home',

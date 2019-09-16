@@ -1,22 +1,23 @@
 <template>
   <div>
-    <el-table :data="tableData" border style="width: 100%">
-      <el-table-column fixed prop="date" label="日期" width="150"></el-table-column>
-      <el-table-column prop="name" label="姓名" width="120"></el-table-column>
-      <el-table-column prop="province" label="省份" width="120"></el-table-column>
-      <el-table-column prop="city" label="市区" width="120"></el-table-column>
-      <el-table-column prop="address" label="地址" width="300"></el-table-column>
-      <el-table-column prop="zip" label="邮编" width="120"></el-table-column>
-      <el-table-column fixed="right" label="操作" width="100">
-        <template slot-scope="scope">
-          <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
-          <el-button type="text" size="small">编辑</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <i @click="dialogVisible=true" class="el-icon-plus"></i>
+    <div style="width:491px;margin:0 auto;">
+      <el-table :data="tableData" border style="width: 100%;">
+        <el-table-column fixed prop="id" label="id" width="150"></el-table-column>
+        <el-table-column prop="title" label="标题" width="120"></el-table-column>
+        <el-table-column prop="lastTime" label="最后更改时间" width="120"></el-table-column>
+        <el-table-column label="操作" width="100">
+          <template slot-scope="scope">
+            <el-button @click="handleClick(scope.row,'read')" type="text" size="small">查看</el-button>
+            <el-button @click="handleClick(scope.row,'edit')" type="text" size="small">编辑</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-button class="add-button" @click="dialogVisible=true">
+        <i class="el-icon-plus"></i>新增文章
+      </el-button>
+    </div>
     <el-dialog title="新增文章" :visible.sync="dialogVisible" width="30%">
-      <el-form  :rules="rules" ref="form" :model="form">
+      <el-form :rules="rules" ref="form" :model="form">
         <el-form-item prop="title" label="标题">
           <el-input v-model="form.title" placeholder></el-input>
         </el-form-item>
@@ -29,38 +30,37 @@
 </template>
 
 <script>
-import api from "@/api/api"
+import api from "@/api/api";
 export default {
-  methods: {
-    handleClick(row) {
-      console.log(row);
-    }
-  },
-
   data() {
     return {
-      tableData: [
-        {
-          date: "2016-05-02",
-          name: "王小虎",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 200333
-        }
-      ],
+      tableData: [],
       dialogVisible: false,
       form: {
-        title: "",
+        title: ""
       },
       rules: {
-        title: [{ required: true, message: "标题", trigger: "blur" }],
+        title: [{ required: true, message: "标题", trigger: "blur" }]
       }
     };
   },
-  methods:{
-    commit(e){
-            const that = this;
+  methods: {
+    handleClick(row, type) {
+      console.log(row);
+      if (type === "read") {
+        this.$router.push({
+          path: `/client?id=${row.id}`
+        });
+      }
+
+      if (type === "edit") {
+        this.$router.push({
+          path: `/admin/doc?id=${row.id}`
+        });
+      }
+    },
+    commit(e) {
+      const that = this;
       this.$refs["form"].validate(valid => {
         if (valid) {
           api
@@ -72,6 +72,7 @@ export default {
               if (res.status === 0) {
                 that.$message({ type: "success", message: "新增成功" });
                 this.dialogVisible = false;
+                this.getDoc();
               }
             })
             .catch(err => {
@@ -83,18 +84,27 @@ export default {
           return false;
         }
       });
+    },
+    getDoc() {
+      api
+        .getAllDoc()
+        .then(e => {
+          console.log(e);
+          this.tableData = e;
+        })
+        .catch(e => {
+          console.log(e);
+        });
     }
   },
   created() {
-    api
-      .getAllDoc()
-      .then(e => {
-        console.log(e);
-        this.docList = e;
-      })
-      .catch(e => {
-        console.log(e);
-      });
+    this.getDoc();
   }
 };
 </script>
+<style scoped>
+.add-button {
+  float: right;
+  margin-top: 20px;
+}
+</style>

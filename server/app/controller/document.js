@@ -34,8 +34,8 @@ class DocumentController extends Controller {
   async update() {
     const ctx = this.ctx;
     const id = toInt(ctx.params.id);
-    const user = await ctx.model.Document.findByPk(id);
-    if (!user) {
+    const doc = await ctx.model.Document.findByPk(id);
+    if (!doc) {
       ctx.status = 200;
       ctx.body = {
         status: -1,
@@ -45,8 +45,9 @@ class DocumentController extends Controller {
     }
 
     const { content, title } = ctx.request.body;
-    await user.update({ content, title });
-    ctx.body = user;
+    console.log('时间'+help.getNowDate())
+    await doc.update({ content, title , lastTime:help.getNowDate() });
+    ctx.body = doc;
   }
 
   async destroy() {

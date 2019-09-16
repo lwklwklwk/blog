@@ -1,16 +1,15 @@
 <template>
   <div>
-    <div @click='toClientHome' class="backhome">
-      <i  class="el-icon-s-home "></i>返回首页
+    <div class="head-bar">
+      <div @click="toClientHome" class="backhome">
+        <i class="el-icon-s-home"></i>返回首页
+      </div>
+      <div>
+        <el-button @click="showDrawer=!showDrawer" class="drawer-button">
+          <i :class="showDrawer?'el-icon-caret-right':'el-icon-caret-left'"></i>目录
+        </el-button>
+      </div>
     </div>
-    <div>
-      <i
-        style="position: relative;font-size: 54px;color: #607D8B;"
-        @click="showDrawer=!showDrawer"
-        :class="showDrawer?'el-icon-caret-right':'el-icon-caret-left'"
-      ></i>
-    </div>
-
     <el-drawer title="目录" :visible.sync="showDrawer" direction="ltr" size="30%">
       <div
         @click="changeDoc(item)"
@@ -22,7 +21,7 @@
         <span slot="title">{{item.title}}</span>
       </div>
     </el-drawer>
-    <el-col :offset="1" :span="16">
+    <el-col :offset="4" :span="16">
       <el-card>
         <div slot="header">
           <h1>{{nowDoc.title}}</h1>
@@ -54,7 +53,7 @@
         <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
     </span>-->
     <!-- </el-dialog> -->
-    <loginButton :url="'/admin/doc'"></loginButton>
+    <loginButton :query="{id:nowDoc.id}" :url="'/admin/doc'"></loginButton>
   </div>
 </template>
 <script>
@@ -92,6 +91,11 @@ export default {
       .catch(e => {
         console.log(e);
       });
+    if (this.$route.query.id != undefined) {
+      api.findDoc(this.$route.query.id).then(res => {
+        this.nowDoc = res;
+      });
+    }
   },
   methods: {
     handleOpen(key, keyPath) {
@@ -104,9 +108,9 @@ export default {
       this.nowDoc = doc;
       this.showDrawer = false;
     },
-    toClientHome(){
+    toClientHome() {
       this.$router.push({
-        path: '/'
+        path: "/"
       });
     }
   }
@@ -129,11 +133,14 @@ export default {
 };
 </script>
 <style scoped>
-.backhome{
-    float: right;
-    margin-right: 2%;
-    color: #8ea3ad;
-    cursor:pointer;
+.head-bar {
+  height: 50px;
+}
+.backhome {
+  float: left;
+  margin-left: 2%;
+  color: #8ea3ad;
+  cursor: pointer;
 }
 .container {
   display: flex;
@@ -141,6 +148,12 @@ export default {
   justify-content: center;
   /* flex-direction: column; */
   align-items: center;
+}
+.drawer-button {
+  position: absolute;
+  top:40%;
+  left: 0;
+  color: #607d8b;
 }
 </style>
 
