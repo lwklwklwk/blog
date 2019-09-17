@@ -40,6 +40,12 @@ export default {
       data: data
     });
   },
+    async deleteDoc(id) {
+    return axios({
+      url: `document/${id}`,
+      method: "delete"
+    });
+  },
   async uploadFile(file) {
     console.log(file)
     let fd= new FormData()

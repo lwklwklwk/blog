@@ -14,4 +14,5 @@ module.exports = app => {
   router.put('/document/:id',authMiddleware,controller.document.update)
   router.post('/document',authMiddleware,controller.document.create)
   router.post('/upload',controller.upload.upload)
+  router.delete('/document/:id',controller.document.delete)
 };

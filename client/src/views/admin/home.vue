@@ -1,14 +1,18 @@
 <template>
   <div>
-    <div style="width:491px;margin:0 auto;">
+    <div @click="toClientHome" class="backhome">
+      <i class="el-icon-s-home"></i>返回首页
+    </div>
+    <div style="width:541px;margin:0 auto;">
       <el-table :data="tableData" border style="width: 100%;">
         <el-table-column fixed prop="id" label="id" width="150"></el-table-column>
         <el-table-column prop="title" label="标题" width="120"></el-table-column>
         <el-table-column prop="lastTime" label="最后更改时间" width="120"></el-table-column>
-        <el-table-column label="操作" width="100">
+        <el-table-column label="操作" width="150">
           <template slot-scope="scope">
             <el-button @click="handleClick(scope.row,'read')" type="text" size="small">查看</el-button>
             <el-button @click="handleClick(scope.row,'edit')" type="text" size="small">编辑</el-button>
+            <el-button @click="ifDelete(scope.row)" type="text" size="small">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -95,6 +99,32 @@ export default {
         .catch(e => {
           console.log(e);
         });
+    },
+    ifDelete(doc) {
+      this.$alert(`确认删除id为${doc.id}的文章吗`, `确认删除`, {
+        confirmButtonText: "确定",
+        callback: action => {
+          if (action === "confirm") {
+            this.deleteDoc(doc.id);
+          }
+        }
+      });
+    },
+    deleteDoc(id) {
+      api
+        .deleteDoc(id)
+        .then(e => {
+          console.log(e);
+          this.getDoc();
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+    toClientHome() {
+      this.$router.push({
+        path: "/"
+      });
     }
   },
   created() {
@@ -106,5 +136,11 @@ export default {
 .add-button {
   float: right;
   margin-top: 20px;
+}
+.backhome {
+  float: left;
+  margin-left: 2%;
+  color: #8ea3ad;
+  cursor: pointer;
 }
 </style>

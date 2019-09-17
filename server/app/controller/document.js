@@ -50,16 +50,16 @@ class DocumentController extends Controller {
     ctx.body = doc;
   }
 
-  async destroy() {
+  async delete() {
     const ctx = this.ctx;
     const id = toInt(ctx.params.id);
-    const user = await ctx.model.User.findByPk(id);
-    if (!user) {
+    const doc = await ctx.model.Document.findByPk(id);
+    if (!doc) {
       ctx.status = 404;
       return;
     }
 
-    await user.destroy();
+    await doc.destroy();
     ctx.status = 200;
   }
   // async login() {
