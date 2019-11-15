@@ -1,7 +1,7 @@
 <template>
   <div>
     <div @click="back" class="back-doc">
-        <i class="el-icon-arrow-left"></i>返回文章页
+      <i class="el-icon-arrow-left"></i>返回文章页
     </div>
     <div style="width:80%;margin:0 auto">
       <div style="display:flex">
@@ -10,9 +10,12 @@
       </div>
       <mavon-editor ref="md" @imgAdd="addImg" @save="saveMD" v-model="MDValue" />
       <!--  -->
+
+      <div>
+        <input type="file" ref="files" />
+        <el-button @click="upload">上传</el-button>
+      </div>
     </div>
-    <input type="file" ref="files">
-    <el-button @click="upload">上传</el-button>
   </div>
 </template>
 <script>
@@ -53,11 +56,15 @@ export default {
           this.$message.error(err.msg);
         });
     },
-    addImg(url, file) {
+    addImg(position, file) {
       api
         .uploadFile(file)
         .then(res => {
           console.log(res);
+          if (res.status === 0) {
+            console.log('图片上传成功')
+            this.$refs.md.$img2Url(position, res.pic)
+          }
         })
         .catch(err => {
           console.log(err);
@@ -72,11 +79,11 @@ export default {
       });
     },
     upload() {
-      if(!this.$refs.files.files){
-        return
+      if (!this.$refs.files.files) {
+        return;
       }
 
-            api
+      api
         .uploadFile(this.$refs.files.files[0])
         .then(res => {
           console.log(res);

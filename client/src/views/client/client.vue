@@ -10,15 +10,19 @@
         </el-button>
       </div>
     </div>
-    <el-drawer title="目录" :visible.sync="showDrawer" direction="ltr" size="30%">
+    <el-drawer :visible.sync="showDrawer" direction="ltr" size="30%">
+      <div slot="title" class="drawer-title">目录</div>
       <div
         @click="changeDoc(item)"
         style="margin-left:30px;cursor:pointer"
         v-for="item in docList"
         :key="item.id"
       >
-        <i class="el-icon-menu"></i>
+      <div class="drawer-item">
+                <i class="el-icon-menu"></i>
         <span slot="title">{{item.title}}</span>
+      </div>
+
       </div>
     </el-drawer>
     <el-col :offset="4" :span="16">
@@ -157,10 +161,17 @@ export default {
   align-items: center;
 }
 .drawer-button {
-  position: absolute;
+  position: fixed;
   top: 40%;
   left: 0;
   color: #607d8b;
+}
+.drawer-title{
+  font-size:24px;
+}
+.drawer-item{
+  margin-bottom: 10px;
+  font-size: 20px;
 }
 </style>
 

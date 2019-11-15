@@ -104,7 +104,7 @@ export default {
 .edit {
   border: 1px solid rgb(96, 125, 139);
   color: rgb(96, 125, 139);
-  position: absolute;
+  position: fixed;
   right: 30px;
   top: 50%;
   font-size: 50px;

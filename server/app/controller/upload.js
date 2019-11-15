@@ -8,7 +8,7 @@ module.exports = class UploadController extends Controller {
     const name = +new Date()+'-'+ path.basename(file.filename);
 
       // 处理文件，比如上传到云端
-       fs.copyFileSync(file.filepath,path.join(__dirname,'../public/img',name));
+       fs.copyFileSync(file.filepath,path.join(__dirname,'../public/uploadFile',name));
      fs.unlink(file.filepath,err=>{
         console.log('tmp file delete error',err)
       });
@@ -17,7 +17,7 @@ module.exports = class UploadController extends Controller {
     ctx.body = {
       status:0,
       msg:'上传成功',
-      pic:'http://119.23.105.188:8088/public/img/'+name
+      pic:'http://119.23.105.188:8081/public/uploadFile/'+name
     };
   }
 };
