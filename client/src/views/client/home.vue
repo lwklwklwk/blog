@@ -1,22 +1,17 @@
 <template>
-  <div class="main">
+  <el-card class="main">
     <loginButton :url="'/admin/home'"></loginButton>
-    <div style="text-align: center;">可疑的团子的blog</div>
-    <div class="main-head">
+    <div style="color:#515151;text-align:center"><span style="color:#5fbeaa">可疑的团子</span>のblog</div>
+    <div class="main-head need-bar">
       <p>文章列表</p>
     </div>
     <div>
-      <div
-        @click="toDoc(item)"
-        style="margin-left:30px;cursor:pointer"
-        v-for="item in docList"
-        :key="item.id"
-      >
-        <i class="el-icon-menu"></i>
-        <span slot="title">{{item.title}}</span>
+      <div class="item-box need-bar" v-for="item in docList" :key="item.id">
+        <div class="item-title" @click="toDoc(item)">{{item.title}}</div>
+        <span class="item-time">最后更新时间：{{toTime(item.lastTime)}}</span>
       </div>
     </div>
-  </div>
+  </el-card>
 </template>
 <script>
 import api from "@/api/api";
@@ -46,6 +41,15 @@ export default {
       this.$router.push({
         path: `/client?id=${item.id}`
       });
+    },
+    toTime(time){
+      let date=time.split('T')[0]
+      let smallTime=time.split('T')[1].split('.')[0]
+      let timeArr = smallTime.split(':')
+      timeArr[0]=(+timeArr[0]+8)%24+ ''
+      console.log(timeArr)
+      smallTime=timeArr.join(':')
+      return date+' '+smallTime
     }
   }
 };
@@ -59,15 +63,32 @@ export default {
 .main-head {
   font-size: 20px;
   text-align: initial;
-  position: relative;
+  color: #636363;
+  font-size:26px
 }
-.main-head:after {
-  background: #9e9e9e;
+.need-bar:after {
+  background: #ededed;
   content: " ";
   height: 1px;
   top: 0;
+  margin-bottom:20px;
   width: 100%;
   left: 0;
   display: table;
+}
+.item-box {
+  margin-left: 30px;
+
+  overflow: hidden;
+}
+.item-title {
+  color: #21759b;
+  cursor: pointer;
+}
+.item-time {
+  color: #757575;
+  font-size: 16px;
+  float: right;
+  margin-bottom: 10px;
 }
 </style>

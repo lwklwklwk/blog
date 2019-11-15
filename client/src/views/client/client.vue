@@ -30,7 +30,14 @@
           <textarea v-model="nowDoc.content">input</textarea>
         </div>-->
         <div id="preview">
-          <div v-html="compiledMarkdown"></div>
+          <mavon-editor
+            ref="md"
+            :subfield="false"
+            :boxShadow="false"
+            defaultOpen="preview"
+            :toolbarsFlag="false"
+            v-model=" nowDoc.content "
+          />
         </div>
       </el-card>
     </el-col>
@@ -76,11 +83,11 @@ export default {
       nowDoc: {}
     };
   },
-  computed: {
-    compiledMarkdown: function() {
-      return marked(this.nowDoc.content || "");
-    }
-  },
+  // computed: {
+  //   compiledMarkdown: function() {
+  //     return marked(this.nowDoc.content || "");
+  //   }
+  // },
   created() {
     api
       .getAllDoc()
@@ -151,7 +158,7 @@ export default {
 }
 .drawer-button {
   position: absolute;
-  top:40%;
+  top: 40%;
   left: 0;
   color: #607d8b;
 }

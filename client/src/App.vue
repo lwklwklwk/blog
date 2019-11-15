@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <router-view ></router-view>
+  <div class="app">
+    <router-view></router-view>
   </div>
 </template>
 <script>
@@ -14,7 +14,7 @@ export default {
     return {
       markdownText: "",
       isCollapse: true,
-      title:'JS闭包心得'
+      title: "JS闭包心得"
     };
   },
   computed: {
@@ -66,4 +66,8 @@ export default {
   align-items: center;
 }
 </style>
-
+<style>
+body {
+  background-color: #e6e6e6;
+}
+</style>

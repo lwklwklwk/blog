@@ -11,6 +11,8 @@
       <mavon-editor ref="md" @imgAdd="addImg" @save="saveMD" v-model="MDValue" />
       <!--  -->
     </div>
+    <input type="file" ref="files">
+    <el-button @click="upload">上传</el-button>
   </div>
 </template>
 <script>
@@ -68,6 +70,23 @@ export default {
       this.$router.push({
         path: `/client?id=${this.$route.query.id}`
       });
+    },
+    upload() {
+      if(!this.$refs.files.files){
+        return
+      }
+
+            api
+        .uploadFile(this.$refs.files.files[0])
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          console.log(err);
+          // if (err.url) {
+          //   this.$refs.md.$img2Url(url, err.url);
+          // }
+        });
     }
   }
 };
