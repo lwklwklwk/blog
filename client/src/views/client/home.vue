@@ -58,13 +58,12 @@ export default {
 .main {
   width: 80%;
   margin: 0 auto;
-  font-size: 30px;
+  font-size: 1.2rem;
 }
 .main-head {
-  font-size: 20px;
   text-align: initial;
   color: #636363;
-  font-size:26px
+  font-size:1.5rem
 }
 .need-bar:after {
   background: #ededed;
@@ -87,7 +86,7 @@ export default {
 }
 .item-time {
   color: #757575;
-  font-size: 16px;
+  font-size: 0.8rem;
   float: right;
   margin-bottom: 10px;
 }

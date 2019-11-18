@@ -12,20 +12,19 @@
     </div>
     <el-drawer :visible.sync="showDrawer" direction="ltr" size="30%">
       <div slot="title" class="drawer-title">目录</div>
-      <div
-        @click="changeDoc(item)"
-        style="margin-left:30px;cursor:pointer"
-        v-for="item in docList"
-        :key="item.id"
-      >
-      <div class="drawer-item">
-                <i class="el-icon-menu"></i>
-        <span slot="title">{{item.title}}</span>
-      </div>
-
-      </div>
+        <div
+          @click="changeDoc(item)"
+          style="margin-left:30px;cursor:pointer;"
+          v-for="item in docList"
+          :key="item.id"
+        >
+          <div class="drawer-item">
+            <i class="el-icon-menu"></i>
+            <span slot="title">{{item.title}}</span>
+          </div>
+        </div>
     </el-drawer>
-    <el-col :offset="4" :span="16">
+    <div style="min-width:350px;margin:0 10%" :span="16">
       <el-card>
         <div slot="header">
           <h1>{{nowDoc.title}}</h1>
@@ -44,7 +43,7 @@
           />
         </div>
       </el-card>
-    </el-col>
+    </div>
     <!-- <i v-if="ifLogin" @click="toAdmin" class="el-icon-edit edit"></i>
     <i  v-if="!ifLogin" @click="dialogVisible = true" class="el-icon-edit edit"></i>
     <el-dialog title="登陆" :visible.sync="dialogVisible" width="30%">
@@ -166,12 +165,18 @@ export default {
   left: 0;
   color: #607d8b;
 }
-.drawer-title{
-  font-size:24px;
+.drawer-title {
+  font-size: 24px;
+  z-index: 2000;
 }
-.drawer-item{
+.drawer-item {
   margin-bottom: 10px;
   font-size: 20px;
+}
+</style>
+<style>
+.el-drawer__body{
+  overflow: scroll
 }
 </style>
 

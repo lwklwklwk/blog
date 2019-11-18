@@ -5,7 +5,7 @@
     </div>
     <div style="width:80%;margin:0 auto">
       <div style="display:flex">
-        <h2 style="margin:10px">标题</h2>
+        <h2 style="margin:10px;white-space: nowrap; */">标题</h2>
         <el-input style="width:300px;margin:10px" v-model="title"></el-input>
       </div>
       <mavon-editor ref="md" @imgAdd="addImg" @save="saveMD" v-model="MDValue" />
@@ -100,7 +100,6 @@ export default {
 </script>
 <style scoped>
 .back-doc {
-  float: left;
   margin-left: 2%;
   color: #8ea3ad;
   cursor: pointer;
