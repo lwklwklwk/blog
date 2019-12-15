@@ -24,7 +24,7 @@
       </el-table>
     </div>
     <el-dialog :show-close="false" custom-class="pic-dialog" :visible.sync="showPicDetail" width="80%" style="text-align:center;background:none">
-      <img style="margin:0 auto" :src="nowPic">
+      <img style="max-width:70%;margin:0 auto" :src="nowPic">
     </el-dialog>
   </div>
 </template>
