@@ -1,7 +1,8 @@
 <template>
   <div>
-    <div @click="toClientHome" class="backhome">
-      <i class="el-icon-s-home"></i>返回首页
+    <div class="top-bar">
+      <span @click="toClientHome" class="backhome "><i class="el-icon-s-home"></i>返回首页</span>
+      <span @click="toFileSystem" class="to-file-system "><i class="el-icon-s-platform"></i>文件中心</span>
     </div>
     <div style="width:541px;margin:0 auto;">
       <el-table :data="tableData" border style="width: 100%;">
@@ -34,6 +35,7 @@
 </template>
 
 <script>
+import help from '@/util/help'
 import api from "@/api/api";
 export default {
   data() {
@@ -95,6 +97,9 @@ export default {
         .then(e => {
           console.log(e);
           this.tableData = e;
+          this.tableData.forEach(element => {
+          element.lastTime=help.UTCTimeChange(element.lastTime)
+        });
         })
         .catch(e => {
           console.log(e);
@@ -125,6 +130,11 @@ export default {
       this.$router.push({
         path: "/"
       });
+    },
+    toFileSystem() {
+      this.$router.push({
+        path:'/admin/fileSystem'
+      })
     }
   },
   created() {
@@ -138,9 +148,16 @@ export default {
   margin-top: 20px;
 }
 .backhome {
-  float: left;
   margin-left: 2%;
-  color: #8ea3ad;
+  color: #119adb;
   cursor: pointer;
+}
+.to-file-system{
+  margin-left: 2%;
+  color: #f44336;
+  cursor: pointer;
+}
+.top-bar {
+  margin-bottom:2%
 }
 </style>

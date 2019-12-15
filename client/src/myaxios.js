@@ -2,7 +2,7 @@ import app from './main.js'
 import axios from 'axios'
 
 const service = axios.create({
-  baseURL: ' http://119.23.105.188:8081', // api的base_url
+  baseURL: process.env.VUE_APP_url, // api的base_url http://119.23.105.188:8081
   timeout: 5000 // 请求超时时间
 })
 //请求发送拦截，把数据发送给后台之前做些什么......

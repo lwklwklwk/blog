@@ -24,7 +24,12 @@ export default {
     return axios({
       url: `document`,
       method: "get"
-    });
+    }).then(e=>{
+              e.sort((a,b)=>{
+          return Date.parse(b.lastTime)- Date.parse(a.lastTime)
+        })
+        return e
+    })
   },
     async createDoc(data) {
     return axios({
@@ -58,6 +63,21 @@ export default {
         "Content-Type": "application/x-www-form-urlencoded"
       }
     });
+  },
+  async getFileList(){
+    return axios({
+      url:`getFileList`,
+      method:'get'
+    })
+  },
+  download(name){
+    window.open(process.env.VUE_APP_url+'/download?name='+name)
+  },
+  deleteFile(name) {
+    return axios({
+      url:`deleteFile?name=`+name,
+      method:'get'
+    })
   }
 };
 </script>

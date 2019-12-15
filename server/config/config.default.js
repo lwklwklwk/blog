@@ -18,6 +18,33 @@ module.exports = appInfo => {
   // add your middleware config here
   config.multipart = {
     mode: 'file',
+    whitelist: [
+      '.rar',
+      '.zip',
+      // images
+      '.jpg', '.jpeg', // image/jpeg
+      '.png', // image/png, image/x-png
+      '.gif', // image/gif
+      '.bmp', // image/bmp
+      '.wbmp', // image/vnd.wap.wbmp
+      '.webp',
+      '.tif',
+      '.psd',
+      // text
+      '.svg',
+      '.js', '.jsx',
+      '.json',
+      '.css', '.less',
+      '.html', '.htm',
+      '.xml',
+      // tar
+      '.zip',
+      '.gz', '.tgz', '.gzip',
+      // video
+      '.mp3',
+      '.mp4',
+      '.avi',
+    ],
   };
   config.bodyParser = {
     jsonLimit: '5mb',
@@ -26,6 +53,10 @@ module.exports = appInfo => {
   // add your user config here
   const userConfig = {
     // myAppName: 'egg',
+  };
+  exports.static = {
+    prefix: '/public/',
+    dir: ['../public']// 多静态文件入口
   };
   config.cluster = {
     listen: {

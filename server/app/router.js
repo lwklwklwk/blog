@@ -13,6 +13,9 @@ module.exports = app => {
   router.get('/document/:id',controller.document.show)
   router.put('/document/:id',authMiddleware,controller.document.update)
   router.post('/document',authMiddleware,controller.document.create)
-  router.post('/upload',controller.upload.upload)
   router.delete('/document/:id',controller.document.delete)
+  router.post('/upload',authMiddleware,controller.upload.upload)
+  router.get('/getFileList',authMiddleware,controller.upload.getFileList)
+  router.get('/download',controller.upload.download)
+  router.get('/deleteFile',controller.upload.deleteFile)
 };

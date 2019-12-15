@@ -8,13 +8,14 @@
     <div>
       <div class="item-box need-bar" v-for="item in docList" :key="item.id">
         <div class="item-title" @click="toDoc(item)">{{item.title}}</div>
-        <span class="item-time">最后更新时间：{{toTime(item.lastTime)}}</span>
+        <span class="item-time">最后更新时间：{{item.lastTime}}</span>
       </div>
     </div>
   </el-card>
 </template>
 <script>
 import api from "@/api/api";
+import help from '@/util/help'
 import loginButton from "@/component/loginButton.vue";
 export default {
   data() {
@@ -31,6 +32,9 @@ export default {
       .then(e => {
         console.log(e);
         this.docList = e;
+        this.docList.forEach(element => {
+          element.lastTime=help.UTCTimeChange(element.lastTime)
+        });
       })
       .catch(e => {
         console.log(e);
@@ -41,15 +45,6 @@ export default {
       this.$router.push({
         path: `/client?id=${item.id}`
       });
-    },
-    toTime(time){
-      let date=time.split('T')[0]
-      let smallTime=time.split('T')[1].split('.')[0]
-      let timeArr = smallTime.split(':')
-      timeArr[0]=(+timeArr[0]+8)%24+ ''
-      console.log(timeArr)
-      smallTime=timeArr.join(':')
-      return date+' '+smallTime
     }
   }
 };

@@ -12,17 +12,17 @@
     </div>
     <el-drawer :visible.sync="showDrawer" direction="ltr" size="30%">
       <div slot="title" class="drawer-title">目录</div>
-        <div
-          @click="changeDoc(item)"
-          style="margin-left:30px;cursor:pointer;"
-          v-for="item in docList"
-          :key="item.id"
-        >
-          <div class="drawer-item">
-            <i class="el-icon-menu"></i>
-            <span slot="title">{{item.title}}</span>
-          </div>
+      <div
+        @click="changeDoc(item)"
+        style="margin-left:30px;cursor:pointer;"
+        v-for="item in docList"
+        :key="item.id"
+      >
+        <div class="drawer-item">
+          <i class="el-icon-menu"></i>
+          <span slot="title">{{item.title}}</span>
         </div>
+      </div>
     </el-drawer>
     <div style="min-width:350px;margin:0 10%" :span="16">
       <el-card>
@@ -39,7 +39,7 @@
             :boxShadow="false"
             defaultOpen="preview"
             :toolbarsFlag="false"
-            v-model=" nowDoc.content "
+            :value=" nowDoc.content ||''"
           />
         </div>
       </el-card>
@@ -120,7 +120,7 @@ export default {
     },
     toClientHome() {
       this.$router.push({
-        path: "/"
+        path: "/" 
       });
     }
   }
@@ -149,7 +149,7 @@ export default {
 .backhome {
   float: left;
   margin-left: 2%;
-  color: #8ea3ad;
+  color: #119adb;
   cursor: pointer;
 }
 .container {
@@ -175,8 +175,8 @@ export default {
 }
 </style>
 <style>
-.el-drawer__body{
-  overflow: scroll
+.el-drawer__body {
+  overflow: scroll;
 }
 </style>
 

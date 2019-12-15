@@ -4,6 +4,7 @@ import adminHome from "./views/admin/home"
 import editDoc from './views/admin/editDoc'
 import home from './views/client/home'
 import client from './views/client/client.vue'
+import fileSystem from './views/admin/fileSystem.vue'
 Vue.use(Router)
 export default new Router({
   routes: [
@@ -26,6 +27,11 @@ export default new Router({
       path:'/admin/home',
       name:'adminHome',
       component:adminHome
+    },
+    {
+      path:'/admin/fileSystem',
+      name :'fileSystem',
+      component:fileSystem
     }
   ]
 })
